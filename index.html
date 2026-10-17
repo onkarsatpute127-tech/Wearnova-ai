@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WearNova AI | Design Your Style</title>
+<meta name="description" content="Discover and customize your own clothing designs with WearNova AI.">
+<style>
+:root {
+  --bg:#0b0d10; --panel:#14181e; --line:#29313b;
+  --text:#f5f7fa; --muted:#9ca8b7; --green:#b8ff65;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+button,input,select,textarea {font:inherit}
+button {cursor:pointer}
+header {
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;padding:16px 5%;background:#0b0d10f5;
+  border-bottom:1px solid var(--line);
+}
+.logo {font-size:23px;font-weight:800;white-space:nowrap}
+.logo span {color:var(--green)}
+nav {display:flex;gap:20px;align-items:center}
+nav a {color:var(--text);text-decoration:none;font-size:14px}
+a:hover {color:var(--green)}
+.btn {
+  background:var(--green);color:#10140c;border:0;
+  padding:12px 18px;border-radius:9px;font-weight:700;
+}
+.btn:hover {filter:brightness(.92)}
+.btn.secondary {background:transparent;color:var(--text);border:1px solid var(--line)}
+.wrap {width:min(1200px,92%);margin:auto}
+.hero {
+  display:grid;grid-template-columns:1.05fr .95fr;
+  gap:32px;align-items:center;padding:52px 0;
+}
+.eyebrow {color:var(--green);font-size:13px;font-weight:700;letter-spacing:2px}
+h1 {font-size:clamp(38px,5vw,64px);line-height:1.05;margin:16px 0}
+h1 span {color:var(--green)}
+p {line-height:1.65}
+.muted {color:var(--muted)}
+.hero-image {
+  min-height:340px;border-radius:20px;overflow:hidden;
+  background:#20252c;
+}
+.hero-image img {width:100%;height:100%;min-height:340px;object-fit:cover;display:block}
+.hero-actions {display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.section {padding:38px 0}
+.section-head {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;margin-bottom:22px;flex-wrap:wrap;
+}
+h2 {font-size:28px;margin:0}
+h3 {margin:10px 0}
+.categories {display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.category {
+  background:var(--panel);border:1px solid var(--line);
+  padding:22px 12px;text-align:center;border-radius:12px;
+  color:var(--text);font-weight:700;
+}
+.category.active,.category:hover {border-color:var(--green);color:var(--green)}
+.toolbar {display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.toolbar input,.toolbar select,.field {
+  background:#101318;color:var(--text);border:1px solid var(--line);
+  border-radius:9px;padding:12px;width:100%;
+}
+.toolbar input {flex:1;min-width:190px}
+.toolbar select {width:auto;min-width:140px}
+.products {display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card {
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;min-width:0;
+}
+.product-img {height:240px;background:#20242b;overflow:hidden}
+.product-img img {width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.card:hover .product-img img {transform:scale(1.04)}
+.product-info {padding:14px}
+.product-info p {font-size:13px;margin:6px 0 14px}
+.product-info .btn {width:100%}
+.tag {font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:1px}
+.studio {
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  background:var(--panel);padding:22px;border:1px solid var(--line);
+  border-radius:18px;
+}
+.form-stack {display:grid;gap:14px}
+label {font-size:13px;color:#dce1e8;display:block;margin-bottom:7px}
+.preview {
+  position:relative;min-height:350px;background:#e9e9e9;
+  border-radius:12px;overflow:hidden;display:flex;
+  justify-content:center;align-items:center;
+}
+.preview img {width:100%;height:350px;object-fit:contain}
+.preview-text {
+  position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);
+  max-width:85%;overflow-wrap:anywhere;text-align:center;
+  color:#111;font-weight:900;font-size:clamp(16px,3vw,28px);
+  text-shadow:0 1px 2px #fff8;pointer-events:none;
+}
+.preview-note {font-size:12px;color:var(--muted)}
+.notice {padding:12px;background:#202b1b;border-radius:8px;color:#d7ffc0;font-size:13px}
+.request-list {display:grid;gap:12px}
+.request {padding:15px;border:1px solid var(--line);border-radius:10px;overflow-wrap:anywhere}
+footer {margin-top:50px;border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+[hidden] {display:none!important}
+@media(max-width:850px) {
+  nav {gap:10px} nav a {font-size:12px}
+  .products {grid-template-columns:repeat(2,1fr)}
+  .categories {grid-template-columns:repeat(2,1fr)}
+  .hero {grid-template-columns:1fr;padding:35px 0}
+  .studio {grid-template-columns:1fr}
+}
+@media(max-width:520px) {
+  header {padding:14px 4%;flex-wrap:wrap}
+  .logo {font-size:20px}
+  nav {order:3;width:100%;justify-content:space-between}
+  nav a {font-size:12px}
+  .products {gap:10px}
+  .product-img {height:175px}
+  .product-info {padding:10px}
+  h2 {font-size:23px}
+  .hero-image,.hero-image img {min-height:240px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo" style="color:white;text-decoration:none">✦ WearNova <span>AI</span></a>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#studio">Create</a>
+    <a href="#about">About</a>
+  </nav>
+  <button class="btn" onclick="document.querySelector('#studio').scrollIntoView()">Start Designing</button>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">YOUR IDEA. YOUR STYLE.</div>
+      <h1>Wear Your<br><span>Imagination.</span></h1>
+      <p class="muted">Discover unique clothing designs and create a style that's truly yours. T-shirts, shirts, hoodies and more.</p>
+      <div class="hero-actions">
+        <button class="btn" onclick="document.querySelector('#shop').scrollIntoView()">Explore Collection →</button>
+        <button class="btn secondary" onclick="document.querySelector('#studio').scrollIntoView()">Customize Yours</button>
+      </div>
+      <p class="muted">✦ Original concepts · ✦ Personal style · ✦ Price on request</p>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1000&q=85"
+           alt="Clothing collection" onerror="this.style.display='none'">
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>Explore Categories</h2></div>
+    <div class="categories">
+      <button class="category active" data-category="All">✦ All Styles</button>
+      <button class="category" data-category="T-Shirts">T-Shirts</button>
+      <button class="category" data-category="Shirts">Shirts</button>
+      <button class="category" data-category="Hoodies">Hoodies</button>
+      <button class="category" data-category="Women's Tops">Women's Tops</button>
+    </div>
+  </section>
+
+  <section class="section" id="shop">
+    <div class="section-head">
+      <div><div class="eyebrow">FIND YOUR LOOK</div><h2>Discover Designs</h2></div>
+      <span class="muted" id="resultCount">8 designs</span>
+    </div>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search designs, products, styles..." aria-label="Search designs">
+      <select id="sort" aria-label="Sort designs">
+        <option value="featured">Featured designs</option>
+        <option value="az">Name: A to Z</option>
+      </select>
+    </div>
+    <div class="products" id="products"></div>
+    <p class="muted" id="empty" hidden>No designs found. Try a different search.</p>
+  </section>
+
+  <section class="section" id="studio">
+    <div class="section-head">
+      <div><div class="eyebrow">MAKE IT YOURS</div><h2>Customization Studio</h2></div>
+    </div>
+    <div class="studio">
+      <div class="form-stack">
+        <div>
+          <label for="designName">Design / Product</label>
+          <input class="field" id="designName" value="Classic Graphic T-Shirt" placeholder="Product name">
+        </div>
+        <div>
+          <label for="productType">Product type</label>
+          <select class="field" id="productType">
+            <option>T-Shirts</option><option>Shirts</option>
+            <option>Hoodies</option><option>Women's Tops</option>
+          </select>
+        </div>
+        <div>
+          <label for="customText">Your text or design idea</label>
+          <input class="field" id="customText" placeholder="e.g. GOOD VIBES">
+        </div>
+        <div>
+          <label for="garmentColor">Garment colour</label>
+          <select class="field" id="garmentColor">
+            <option value="white">White</option><option value="black">Black</option>
+            <option value="#d9e8d5">Sage Green</option><option value="#d9c8b3">Beige</option>
+          </select>
+        </div>
+        <div>
+          <label for="size">Size</label>
+          <select class="field" id="size">
+            <option>S</option><option>M</option><option>L</option>
+            <option>XL</option><option>XXL</option>
+          </select>
+        </div>
+        <div>
+          <label for="reference">Upload a reference image (optional)</label>
+          <input class="field" id="reference" type="file" accept="image/*">
+        </div>
+        <div>
+          <label for="contact">Your WhatsApp number or email</label>
+          <input class="field" id="contact" placeholder="Enter contact details">
+        </div>
+        <div>
+          <label for="notes">Additional instructions</label>
+          <textarea class="field" id="notes" rows="3" placeholder="Describe your idea..."></textarea>
+        </div>
+        <button class="btn" id="submitRequest">Submit Design Request</button>
+        <div id="status" class="notice" hidden></div>
+        <p class="preview-note">This demo saves requests only in this browser. It does not send them to the business owner.</p>
+      </div>
+
+      <div>
+        <h3>Live Preview</h3>
+        <div class="preview" id="preview">
+          <img id="previewImg"
+            src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85"
+            alt="Clothing preview">
+          <div class="preview-text" id="previewText"></div>
+        </div>
+        <p class="preview-note">Preview is illustrative. Colour changes update the preview background; exact fabric and print simulation is not included yet.</p>
+        <button class="btn secondary" style="width:100%" id="resetPreview">Reset Preview</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="admin">
+    <div class="section-head">
+      <div><div class="eyebrow">OWNER AREA · DEMO ONLY</div><h2>Design Requests</h2></div>
+      <button class="btn secondary" id="showRequests">View Local Requests</button>
+    </div>
+    <div id="requests" class="request-list" hidden></div>
+    <p class="preview-note">Demo admin area only — no login or secure customer database. Do not use this for real customer data yet.</p>
+  </section>
+
+  <section class="section" id="about">
+    <h2>Made for Your Imagination</h2>
+    <p class="muted">WearNova AI is a concept for personalized fashion. Choose a product, share your idea and request a quote. Final availability, production and pricing must be confirmed before an order.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong style="color:white">✦ WearNova AI</strong>
+    <p>You describe it. AI designs it. We bring your style to life.</p>
+    <span>India · Prices confirmed individually · © WearNova AI</span>
+  </div>
+</footer>
+
+<script>
+const designs = [
+ {name:"Urban Wolf",cat:"T-Shirts",desc:"Bold streetwear graphic",img:"photo-1521572163474-6864f9cf17ab"},
+ {name:"Minimal Everyday",cat:"T-Shirts",desc:"Clean everyday aesthetic",img:"photo-1503341504253-dff4815485f1"},
+ {name:"Classic Black Shirt",cat:"Shirts",desc:"Smart casual style",img:"photo-1598033129183-c4f50c736f10"},
+ {name:"Adventure Hoodie",cat:"Hoodies",desc:"Street-ready comfort",img:"photo-1556821840-3a63f95609a7"},
+ {name:"Essential White",cat:"Women's Tops",desc:"Simple modern style",img:"photo-1551488831-00ddcb6c6bd3"},
+ {name:"Oversized Streetwear",cat:"T-Shirts",desc:"Relaxed graphic look",img:"photo-1529139574466-a303027c1d8b"},
+ {name:"Everyday Layers",cat:"Hoodies",desc:"Casual layering concept",img:"photo-1578681994506-b8f463449011"},
+ {name:"Modern Fashion",cat:"Women's Tops",desc:"Contemporary wardrobe",img:"photo-1483985988355-763728e1935b"}
+];
+
+let selectedCategory = "All";
+let referenceData = "";
+
+function imageUrl(id) {
+  return "https://images.unsplash.com/" + id +
+    "?auto=format&fit=crop&w=600&q=80";
+}
+
+function renderProducts() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  let items = designs.filter(d =>
+    (selectedCategory === "All" || d.cat === selectedCategory) &&
+    (d.name + " " + d.cat + " " + d.desc).toLowerCase().includes(q)
+  );
+  if (document.getElementById("sort").value === "az") {
+    items.sort((a,b) => a.name.localeCompare(b.name));
+  }
+  document.getElementById("resultCount").textContent = items.length + " designs";
+  document.getElementById("empty").hidden = items.length > 0;
+  document.getElementById("products").innerHTML = items.map(d => `
+    <article class="card">
+      <div class="product-img">
+        <img src="${imageUrl(d.img)}" alt="${d.name}" loading="lazy"
+          onerror="this.style.opacity='.25'">
+      </div>
+      <div class="product-info">
+        <div class="tag">${d.cat}</div>
+        <h3>${d.name}</h3>
+        <p class="muted">${d.desc}</p>
+        <p>Price on request</p>
+        <button class="btn choose" data-name="${d.name}" data-cat="${d.cat}"
+          data-img="${d.img}">Customize Design</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+document.getElementById("products").addEventListener("click", e => {
+  const b = e.target.closest(".choose");
+  if (!b) return;
+  document.getElementById("designName").value = b.dataset.name;
+  document.getElementById("productType").value = b.dataset.cat;
+  document.getElementById("previewImg").src = imageUrl(b.dataset.img);
+  document.getElementById("studio").scrollIntoView({behavior:"smooth"});
+});
+
+document.querySelectorAll(".category").forEach(b => {
+  b.addEventListener("click", () => {
+    selectedCategory = b.dataset.category;
+    document.querySelectorAll(".category").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    renderProducts();
+  });
+});
+
+document.getElementById("search").addEventListener("input", renderProducts);
+document.getElementById("sort").addEventListener("change", renderProducts);
+
+function updatePreview() {
+  const color = document.getElementById("garmentColor").value;
+  document.getElementById("preview").style.background = color;
+  document.getElementById("previewText").textContent =
+    document.getElementById("customText").value;
+  document.getElementById("previewText").style.color =
+    color === "black" ? "white" : "#151515";
+}
+["garmentColor","customText"].forEach(id =>
+  document.getElementById(id).addEventListener("input", updatePreview)
+);
+
+document.getElementById("reference").addEventListener("change", e => {
+  const file = e.target.files[0];
+  referenceData = "";
+  if (!file) return;
+  if (!file.type.startsWith("image/")) {
+    alert("Please choose an image file.");
+    e.target.value = "";
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    alert("For this demo, please use an image under 2 MB.");
+    e.target.value = "";
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    referenceData = reader.result;
+    document.getElementById("previewImg").src = referenceData;
+  };
+  reader.readAsDataURL(file);
+});
+
+function getRequests() {
+  try { return JSON.parse(localStorage.getItem("wearnova_demo_requests") || "[]"); }
+  catch { return []; }
+}
+
+document.getElementById("submitRequest").addEventListener("click", () => {
+  const contact = document.getElementById("contact").value.trim();
+  if (!contact) {
+    alert("Please enter a WhatsApp number or email for this demo request.");
+    return;
+  }
+  const request = {
+    name: document.getElementById("designName").value.trim(),
+    category: document.getElementById("productType").value,
+    text: document.getElementById("customText").value.trim(),
+    color: document.getElementById("garmentColor").value,
+    size: document.getElementById("size").value,
+    contact: contact,
+    notes: document.getElementById("notes").value.trim(),
+    hasReference: !!referenceData,
+    date: new Date().toLocaleString()
+  };
+  try {
+    const all = getRequests();
+    all.push(request);
+    localStorage.setItem("wearnova_demo_requests", JSON.stringify(all));
+    document.getElementById("status").textContent =
+      "Demo request saved in this browser. No message has been sent to the owner.";
+    document.getElementById("status").hidden = false;
+  } catch {
+    alert("This browser could not save the demo request.");
+  }
+});
+
+document.getElementById("showRequests").addEventListener("click", () => {
+  const panel = document.getElementById("requests");
+  panel.hidden = !panel.hidden;
+  if (panel.hidden) return;
+  const all = getRequests();
+  panel.innerHTML = all.length ? all.map(r => `
+    <div class="request">
+      <strong>${escapeText(r.name)}</strong> · ${escapeText(r.category)}
+      <p>${escapeText(r.text || "No custom text")}</p>
+      <p class="muted">Size: ${escapeText(r.size)} · Colour: ${escapeText(r.color)}</p>
+      <p class="muted">Contact: ${escapeText(r.contact)}</p>
+      <p class="muted">${escapeText(r.date)}</p>
+    </div>`).join("") : "<p>No requests saved in this browser yet.</p>";
+});
+
+function escapeText(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+document.getElementById("resetPreview").addEventListener("click", () => {
+  document.getElementById("customText").value = "";
+  document.getElementById("garmentColor").value = "white";
+  document.getElementById("previewImg").src = imageUrl("1521572163474-6864f9cf17ab");
+  document.getElementById("reference").value = "";
+  referenceData = "";
+  updatePreview();
+});
+
+renderProducts();
+updatePreview();
+</script>
+</body>
+</html>
